@@ -10,24 +10,7 @@ pipeline {
         SF_ORG__PROD__AUTH_URL = credentials('SF_ORG__PROD__AUTH_URL')
     }
     stages {
-     stage('install SFDX GIT DELTA') {
-            stages{
-                stage('install SGD'){
-                    agent {
-                        docker {
-                            image '$DELTA_DEPLOY_IMAGE'
-                            alwaysPull true
-                        }
-                    }
-                    steps {
-                        sh "echo y | sfdx plugins:install sfdx-git-delta"
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
-                    }
-                }
-        }
-     }
-	   stage('feature') {
+     stage('feature') {
             when { branch 'feature/*'}
             stages{
                 stage('validate_against_QA'){
