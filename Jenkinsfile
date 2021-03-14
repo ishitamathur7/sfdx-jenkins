@@ -25,7 +25,7 @@ pipeline {
                       qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_QA_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__QA__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
                         sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
@@ -53,7 +53,7 @@ pipeline {
                       qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_QA_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__QA__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
                         sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
@@ -76,7 +76,7 @@ pipeline {
                       uat_tag = sh(script: 'git describe --match "uat-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_UAT_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__UAT__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a UAT"
                         sh "sfdx sgd:source:delta --from $uat_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $uat_tag"'
@@ -104,7 +104,7 @@ pipeline {
                       uat_tag = sh(script: 'git describe --match "uat-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_UAT_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__UAT__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a UAT"
                         sh "sfdx sgd:source:delta --from $uat_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $uat_tag"'
@@ -127,7 +127,7 @@ pipeline {
                       prod_tag = sh(script: 'git describe --match "prod-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_PROD_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__PROD__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a PROD"
                         sh "sfdx sgd:source:delta --from $prod_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $prod_tag"'
@@ -161,7 +161,7 @@ pipeline {
                       prod_tag = sh(script: 'git describe --match "prod-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
                     }
                     steps {
-                        sh "echo $SF_PROD_ORG__AUTH_URL > authURLFile"
+                        sh "echo $SF_ORG__PROD__AUTH_URL > authURLFile"
                         sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a PROD"
                         sh "sfdx sgd:source:delta --from $prod_tag --to HEAD --output . --ignore .forceignore"
                         sh 'echo "--- package.xml generated with added and modified metadata from $prod_tag"'
