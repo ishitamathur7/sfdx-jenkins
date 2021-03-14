@@ -5,9 +5,9 @@ pipeline {
         SF_DEPLOY__ENABLED = true
         GIT_USERNAME = credentials('GIT_USERNAME')
         GIT_TOKEN = credentials('GIT_TOKEN')
-        SF_ORG__QA__AUTH_URL = credentials('SF_QA_ORG__AUTH_URL')
-        SF_ORG__UAT__AUTH_URL = credentials('SF_UAT_ORG__AUTH_URL')
-        SF_ORG__PROD__AUTH_URL = credentials('SF_PROD_ORG__AUTH_URL')
+        SF_ORG__QA__AUTH_URL = credentials('SF_ORG__QA__AUTH_URL')
+        SF_ORG__UAT__AUTH_URL = credentials('SF_ORG__UAT__AUTH_URL')
+        SF_ORG__PROD__AUTH_URL = credentials('SF_ORG__PROD__AUTH_URL')
     }
     stages {
 	   stage('feature') {
