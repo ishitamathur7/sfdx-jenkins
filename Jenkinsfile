@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+      label 'docker'
+    }
     environment {
         DELTA_DEPLOY_IMAGE = 'abhisheksaxena7/sfdx-git-delta:latest'
         SF_DEPLOY__ENABLED = true
@@ -16,8 +18,9 @@ pipeline {
                 stage('validate_against_QA'){
                     agent {
 	                    docker {
-	                        image '$DELTA_DEPLOY_IMAGE'
-                            alwaysPull true
+	                        label 'docker'
+                          image '$DELTA_DEPLOY_IMAGE'
+                          alwaysPull true
 	                    }
                     }
                     steps {
@@ -33,6 +36,7 @@ pipeline {
                 stage('deploy_to_QA'){
                     agent {
                         docker {
+                            label 'docker'
                             image '$DELTA_DEPLOY_IMAGE'
                             alwaysPull true
                         }
@@ -45,6 +49,7 @@ pipeline {
                 stage('validate_against_UAT') {
                     agent {
                         docker {
+                            label 'docker'
                             image '$DELTA_DEPLOY_IMAGE'
                             alwaysPull true
                         }
@@ -62,6 +67,7 @@ pipeline {
                 stage('deploy_to_UAT'){
                     agent {
                         docker {
+                            label 'docker'
                             image '$DELTA_DEPLOY_IMAGE'
                             alwaysPull true
                         }
@@ -74,6 +80,7 @@ pipeline {
                 stage('validate_against_PROD') {
                     agent {
                         docker {
+                            label 'docker'
                             image '$DELTA_DEPLOY_IMAGE'
                             alwaysPull true
                         }
@@ -97,6 +104,7 @@ pipeline {
                 stage('deploy_to_PROD'){
                     agent {
                         docker {
+                            label 'docker'
                             image '$DELTA_DEPLOY_IMAGE'
                             alwaysPull true
                         }
