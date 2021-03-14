@@ -62,6 +62,9 @@ pipeline {
                         sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
+                        sh 'git tag qa-$(date +"%Y%m%d%H%M%S")'
+                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push githubremote --tags'
                     }
                 }
                 stage('validate_against_UAT') {
@@ -90,7 +93,12 @@ pipeline {
             }
         }
         stage('master') {
-            when { branch 'master' }
+            when {
+              allOf{
+                branch 'master'
+                changeset "force-app/**"
+              }
+             }
             stages{
                 stage('deploy_to_UAT'){
                     agent {
@@ -113,6 +121,9 @@ pipeline {
                         sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
+                        sh 'git tag uat-$(date +"%Y%m%d%H%M%S")'
+                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push githubremote --tags'
                     }
                 }
                 stage('validate_against_PROD') {
@@ -170,6 +181,9 @@ pipeline {
                         sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
+                        sh 'git tag prod-$(date +"%Y%m%d%H%M%S")'
+                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push githubremote --tags'
                     }
                 }
             }
