@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-      docker {
-          image '$DELTA_DEPLOY_IMAGE'
-          alwaysPull true
-      }
-    }
+    agent any
     environment {
         DELTA_DEPLOY_IMAGE = 'abhisheksaxena7/sfdx-git-delta:latest'
         SF_DEPLOY__ENABLED = true
