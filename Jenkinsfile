@@ -24,6 +24,7 @@ pipeline {
                     }
                 }
         }
+     }
 	   stage('feature') {
             when { branch 'feature/*'}
             stages{
