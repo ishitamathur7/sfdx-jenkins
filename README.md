@@ -1,18 +1,8 @@
-# Salesforce DX Project: Next Steps
+# Jenkins with GitHub Setup for Salesforce Deployments.
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+* Use instructions from: https://github.com/abhisheksaxena7/jenkins-docker-image to set Jenkins up.
 
-## How Do You Plan to Deploy Your Changes?
+* Create a new Multi-branch pipeline and connect it with GitHub.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+* Create environment variables, per the Jenkinsfile and start building.
 
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
