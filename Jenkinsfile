@@ -20,9 +20,20 @@ pipeline {
                           alwaysPull true
 	                    }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_QA_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
+                        sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --checkonly --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --checkonly --ignorewarnings"
                     }
                 }
             }
@@ -37,9 +48,20 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      qa_tag = sh(script: 'git describe --match "qa-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_QA_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a QA"
+                        sh "sfdx sgd:source:delta --from $qa_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $qa_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                     }
                 }
                 stage('validate_against_UAT') {
@@ -49,9 +71,20 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      uat_tag = sh(script: 'git describe --match "uat-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_UAT_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a UAT"
+                        sh "sfdx sgd:source:delta --from $uat_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $uat_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --checkonly --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --checkonly --ignorewarnings"
                     }
                 }
             }
@@ -66,9 +99,20 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      uat_tag = sh(script: 'git describe --match "uat-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_UAT_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a UAT"
+                        sh "sfdx sgd:source:delta --from $uat_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $uat_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                     }
                 }
                 stage('validate_against_PROD') {
@@ -78,9 +122,20 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      prod_tag = sh(script: 'git describe --match "prod-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_PROD_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a PROD"
+                        sh "sfdx sgd:source:delta --from $prod_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $prod_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --checkonly --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --checkonly --ignorewarnings"
                     }
                 }
             }
@@ -101,9 +156,20 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    environment {
+                      fetch_all_tags = sh(script: 'git fetch --tags', , returnStdout: true).trim()
+                      prod_tag = sh(script: 'git describe --match "prod-*" --abbrev=0 --tags HEAD', , returnStdout: true).trim()
+                    }
                     steps {
-                        sh "sfdx --help"
-                        sh "sfdx plugins"
+                        sh "echo $SF_PROD_ORG__AUTH_URL > authURLFile"
+                        sh "sfdx force:auth:sfdxurl:store -f authURLFile -s -a PROD"
+                        sh "sfdx sgd:source:delta --from $prod_tag --to HEAD --output . --ignore .forceignore"
+                        sh 'echo "--- package.xml generated with added and modified metadata from $prod_tag"'
+                        sh "cat package/package.xml"
+                        sh "sfdx force:source:deploy -x package/package.xml --testlevel NoTestRun"
+                        sh 'echo "--- destructiveChanges.xml generated with deleted metadata"'
+                        sh "cat destructiveChanges/destructiveChanges.xml"
+                        sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                     }
                 }
             }
