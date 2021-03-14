@@ -11,7 +11,12 @@ pipeline {
     }
     stages {
      stage('feature') {
-            when { branch 'feature/*'}
+            when {
+              allOf{
+                branch 'feature/*'
+                changeset "force-app/**"
+              }
+            }
             stages{
                 stage('validate_against_QA'){
                     agent {
@@ -39,7 +44,12 @@ pipeline {
             }
         }
         stage('QA') {
-            when { branch 'QA' }
+            when {
+              allOf{
+                branch 'QA'
+                changeset "force-app/**"
+              }
+             }
             stages{
                 stage('deploy_to_QA'){
                     agent {
@@ -63,8 +73,9 @@ pipeline {
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                         sh 'git tag qa-$(date +"%Y%m%d%H%M%S")'
-                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
-                        sh 'git push githubremote --tags'
+                        sh "git remote remove origin"
+                        sh "git remote add origin 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push origin --tags'
                     }
                 }
                 stage('validate_against_UAT') {
@@ -122,8 +133,9 @@ pipeline {
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                         sh 'git tag uat-$(date +"%Y%m%d%H%M%S")'
-                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
-                        sh 'git push githubremote --tags'
+                        sh "git remote remove origin"
+                        sh "git remote add origin 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push origin --tags'
                     }
                 }
                 stage('validate_against_PROD') {
@@ -182,8 +194,9 @@ pipeline {
                         sh "cat destructiveChanges/destructiveChanges.xml"
                         sh "sfdx force:mdapi:deploy -d destructiveChanges --ignorewarnings"
                         sh 'git tag prod-$(date +"%Y%m%d%H%M%S")'
-                        sh "git remote add githubremote 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
-                        sh 'git push githubremote --tags'
+                        sh "git remote remove origin"
+                        sh "git remote add origin 'https://$GIT_USERNAME:$GIT_TOKEN@github.com/abhisheksaxena7/sfdx-jenkins.git'"
+                        sh 'git push origin --tags'
                     }
                 }
             }
